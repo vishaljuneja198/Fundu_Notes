@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FunduNotes</string>
+
+    
+<string name="facebook_app_id">466337131741647</string>
+<string name="fb_login_protocol_scheme">fb466337131741647</string>
+<string name="facebook_client_token">93628481f236f7b3f96db7925704726d</string>
+
+
+</resources>

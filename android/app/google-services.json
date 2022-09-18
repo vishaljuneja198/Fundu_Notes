@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "330743912364",
+    "project_id": "fundonotes-25cbb",
+    "storage_bucket": "fundonotes-25cbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330743912364:android:095e7993af03ff7b798c09",
+        "android_client_info": {
+          "package_name": "com.fundunotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330743912364-i1nq9c0rbkol8agaosoafnrevolgk27k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fundunotes",
+            "certificate_hash": "2876ee408ac16cc2606dc0aa6d053d36cc2e46cd"
+          }
+        },
+        {
+          "client_id": "330743912364-krcdto099paevjfgoj55hep04sdca75s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fundunotes",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "330743912364-vv8f2vafeej6a9trkgn7qo86in7j43h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4hc1wLebs97kLV0XX46YBezTeM8f0lnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330743912364-vv8f2vafeej6a9trkgn7qo86in7j43h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
