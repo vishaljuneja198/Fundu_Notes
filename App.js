@@ -1,5 +1,5 @@
 import React from 'react';
-import Providers from './Navigations';
+import Providers from '../FunduNotes/src/navigations/index';
 
 
 const FunduNotes = () => {
