@@ -6,6 +6,10 @@ const notesCollection = firestore().collection('UserNotes');
 const fireStoreDatabase = () => {
  
   const {user} = useContext(AuthContext);
+  const [pinnedList, setPinnedList] = useState([]);
+  const [unpinnedList, setunpinnedList] = useState([]);
+  const [archiveList, setArchiveList] = useState([]);
+  const [notesList, setNotesList] = useState([]);
 
   const writingNoteToFireStore = async (
     title,
@@ -29,13 +33,15 @@ const fireStoreDatabase = () => {
         console.log(user.uid)
       }
     } catch (error) {
-
       console.log(error);
     }
 
   };
   const fetchingNote = async () => {
     let notesArray = [];// asiginig note array 
+    let pinnedArray = [];
+    let unpinnedArray = [];
+    let archiveArray = [];
 
     try {
       const list = await notesCollection.doc(user.uid).collection('Notes').get();
@@ -43,13 +49,34 @@ const fireStoreDatabase = () => {
         const data = doc.data(); //store doc data with help of data()
         data.key = doc.id;  //doc id into key
         notesArray.push(data);//push operation 
+
+         if (data.Pin && !data.Archive) {
+          pinnedArray.push(data);
+        } else if (!data.Pin && !data.Archive ) {
+          unpinnedArray.push(data);
+        } else {
+          archiveArray.push(data);
+        }
+
+
       });
     } catch (error) {
       console.log(error);
     }
 
-    return notesArray;
-
+    setNotesList(notesArray);
+    setPinnedList(pinnedArray);
+    setunpinnedList(unpinnedArray);
+    setArchiveList(archiveArray);
+    
+    console.log("---------Starting of notes array")
+    console.log(notesArray)
+    console.log("---------Starting of pinned")
+    console.log(pinnedArray)
+    console.log("---------Starting of unpinned")
+    console.log(unpinnedArray)
+    console.log("---------Starting of archive")
+    console.log(archiveArray)
 
   };
 
@@ -78,9 +105,13 @@ const fireStoreDatabase = () => {
 
   return {
 
+    fetchingNote,
+    pinnedList,
+    unpinnedList,
     writingNoteToFireStore,
     updateNote,
-    fetchingNote,
+    archiveList,
+    notesList,
 
   };
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import RemindersScreen from '../screens/Reminders';
 import LabelScreen from '../screens/Label';
-import DeletedScreen from '../screens/Deleted';
+import DeletedScreen from '../screens/Trash';
 import SettingsScreen from '../screens/Settings';
 import ArchiveScreen from '../screens/Archive';
 import HomeScreen from '../screens/HomeScreen';

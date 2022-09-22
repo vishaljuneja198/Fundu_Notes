@@ -1,13 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { heightPercentage, widthPercentage } from '../utils/dimension';
-const NoteCard = ({ data, navigation }) => {
+const NoteCard = ({ item, navigation }) => {
   return (
     <TouchableOpacity
-    onPress={() => { }}>
+    onPress={() => {
+      navigation.navigate('NotesScreen', {...item})}}>
       <View style={[styles.container,]}>
-        <Text style={styles.title}>{data.Title}</Text>
-        <Text style={styles.note}>{data.Note}</Text>
+        <Text style={styles.title}>{item.Title}</Text>
+        <Text style={styles.note}>{item.Note}</Text>
       </View>
     </TouchableOpacity>
   );

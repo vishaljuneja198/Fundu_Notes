@@ -8,16 +8,24 @@ import DeleteIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const NotesBottom = () => {
 
+const controlDeleteButton=()=>{
+    bs.current.snapTo(1)
+
+    
+
+
+}
+
     const renderInner = () => (
         <View style={styles.bottomContainer}>
             <View style={{ marginLeft: 350, paddingTop: 5 }}>
-                <TouchableOpacity onPress={() => bs.current.snapTo(1)}>
+                <TouchableOpacity onPress={controlDeleteButton}>
                     <Image style={{ height: 20, width: 20 }}
                         source={require('../assets/cross.jpg')} />
                 </TouchableOpacity >
             </View>
             <View style={styles.deleteView}>
-                <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity onPress={() => bs.current.snapTo(1)}>
                     <View style={styles.deleteIconView}>
                         <DeleteIcon name="delete" color="black" size={24} />
                         <Text style={styles.text}>Delete</Text>

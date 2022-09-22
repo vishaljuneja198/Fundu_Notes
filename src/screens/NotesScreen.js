@@ -18,18 +18,22 @@ const NotesScreen = ({ navigation }) => {
     const states = {
         title, note, setTitle, setNote, pin, setPin, archive, setArchive, del, setDel,
     };
-
+console.log(id)
+console.log(pin)
     const onBackPress = async () => {
-
+      if(id){
+        await updateNote(id, title, note, pin, archive, del);
+        console.log(id)
+      }else{
         await writingNoteToFireStore(
             title,
             note,
             pin,
             archive,
             del,
-        );
+        ); }
         navigation.goBack();
-    };
+   };
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 0.1 }}>
