@@ -8,19 +8,95 @@ import { AuthContext } from '../../navigations/AuthProvider';
 
 
 const SignUpScreen = ({ navigation }) => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [ConfirmPassword, setConfirmPassword] = useState();
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorFirstName, setErrorFirstName] = useState('');
+    const [errorLastName, setErrorLastName] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirm_pass_error, setconfirm_pass_error] = useState('');
     const { register } = useContext(AuthContext);
+
+    const FirstNameValidation = () => {
+        if (firstName === '') { setErrorFirstName('Enter the First Name '); }
+        else {
+            setErrorFirstName('');
+        }
+    };
+
+    const LastNameValidation = () => {
+        if (lastName === '') { setErrorLastName('Enter the Last Name '); }
+        else {
+            setErrorLastName('');
+        }
+    };
+
+    const EmailValidation = () => {
+        const emailPattern = new RegExp(
+            '^[a-zA-Z0-9]+([-_+.]?[a-zA-Z0-9])*[@]([A-Za-z0-9])+[.][A-Za-z]{2,}([.][A-Za-z]{2,}){0,1}$',);
+        if (email === '') {
+            setEmailError('Enter the email');
+        } else if (!emailPattern.test(email)) {
+            setEmailError('invalid email');
+        }
+        if (emailPattern.test(email)) {
+            setEmailError('');
+        }
+    };
+
+    const PasswordValidation = () => {
+        const passwordPattern = new RegExp(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})',
+        );
+        if (password === '') {
+            setPasswordError('*required');
+        }
+        if (!passwordPattern.test(password)) {
+            setPasswordError('Password Shouls be one capital Alphabet, one special characher, one numeric ');
+        }
+        if (passwordPattern.test(password)) {
+            setPasswordError('');
+        }
+    };
+
+    const confirmpasswordValidation = () => {
+        if (password === confirmPassword) {
+            setconfirm_pass_error('');
+        }
+        if (password !== confirmPassword) {
+            setconfirm_pass_error('password mismatch');
+        }
+    };
+
+
     signUp_validate_feild = () => {
-        if ((email === undefined) || (password === undefined) || (ConfirmPassword === undefined)) {
-            alert("Enter the Valid Inputs")
-        } else {
-            if (password === ConfirmPassword) {
-                register(email, password)
-            } else {
-                alert("Password not matched please fill carefully")
-            }
+        if (email === '' && firstName === '' && lastName === '' && password === '' && confirmPassword === '') {
+            setErrorFirstName('Enter  some Input');
+            setErrorLastName('Enter some')
+            setEmailError('Enter  some Input');
+            setPasswordError('Enter  some Input');
+            setconfirm_pass_error('Enter  some Input');
+        } else if (email !== '' && firstName === '' && lastName === '' && password === '' && confirmPassword === '') {
+            setErrorFirstName('Enter  some Input');
+            setErrorLastName('Enter some input')
+            setPasswordError('Enter  some Input');
+            setconfirm_pass_error('Enter  some Input');
+        } else if (email !== '' && firstName !== '' && lastName === '' && password === '' && confirmPassword === '') {
+            setErrorLastName('Enter some input')
+            setPasswordError('Enter  some Input');
+            setconfirm_pass_error('Enter  some Input');
+        } else if (email !== '' && firstName !== '' && lastName !== '' && password === '' && confirmPassword === '') {
+            setPasswordError('Enter  some Input');
+            setconfirm_pass_error('Enter  some Input');
+
+        } else if (email !== '' && firstName !== '' && lastName !== '' && password !== '' && confirmPassword === '') {
+            setconfirm_pass_error('Enter  some Input');
+        } else if (!(errorFirstName !== '' || errorLastName !== '' || emailError !== '' || passwordError !== '' || confirm_pass_error !== '')) {
+
+            register(email, password)
         }
     }
 
@@ -29,6 +105,34 @@ const SignUpScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Text style={styles.text}>Create an account</Text>
             <FormInput
+                labelValue={firstName}
+                onChangeText={(userFirstName) => setFirstName(userFirstName)}
+                placeholderText="First Name"
+                iconType="user"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onBlur={FirstNameValidation}
+            />
+
+            <View style={styles.errorMeaasgeView}>
+
+                <Text style={styles.errorMessageText}>{errorFirstName}</Text>
+            </View>
+            <FormInput
+                labelValue={lastName}
+                onChangeText={(userLastName) => setLastName(userLastName)}
+                placeholderText="Last Name"
+                iconType="user"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onBlur={LastNameValidation}
+            />
+            <View style={styles.errorMeaasgeView}>
+                <Text style={styles.errorMessageText}>{errorLastName}</Text>
+            </View>
+            <FormInput
                 labelValue={email}
                 onChangeText={(userEmail) => setEmail(userEmail)}
                 placeholderText="Email"
@@ -36,25 +140,39 @@ const SignUpScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-            />
+                onBlur={EmailValidation}
 
+            />
+            <View style={styles.errorMeaasgeView}>
+
+                <Text style={styles.errorMessageText}>{emailError}</Text>
+            </View>
             <FormInput
                 labelValue={password}
                 onChangeText={(userPassword) => setPassword(userPassword)}
                 placeholderText="Password"
                 iconType="lock"
                 secureTextEntry={true}
+                onBlur={PasswordValidation}
             />
+            <View style={styles.errorMeaasgeView}>
+
+                <Text style={styles.errorMessageText}>{passwordError}</Text>
+            </View>
 
             <FormInput
-                labelValue={ConfirmPassword}
+                labelValue={confirmPassword}
                 onChangeText={(userPassword) => setConfirmPassword(userPassword)}
                 placeholderText="Confirm Password"
                 iconType="lock"
                 secureTextEntry={true}
+                onBlur={confirmpasswordValidation}
             />
 
+            <View style={styles.errorMeaasgeView}>
 
+                <Text style={styles.errorMessageText}>{confirm_pass_error}</Text>
+            </View>
             <FormButton
                 buttonTitle="Sign Up"
                 onPress={() => signUp_validate_feild()}
@@ -110,5 +228,17 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontFamily: 'Lato-Regular',
         color: 'grey',
+    },
+    errorMeaasgeView: {
+        marginTop: -8,
+        alignSelf: 'flex-start',
+    },
+
+    errorMessageText: {
+        fontSize: 10,
+        color: 'red',
+        fontFamily: 'Lato-Regular',
+
     }
+
 })

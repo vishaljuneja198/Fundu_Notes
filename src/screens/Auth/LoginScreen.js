@@ -10,22 +10,56 @@ import { AuthContext } from '../../navigations/AuthProvider';
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
 
     const { login, googleLogin, fbLogin } = useContext(AuthContext);
 
     Login_validate_feild = () => {
 
-        if ((email === undefined) || (password === undefined)) {
-
-            alert("please enter the valid inputs")
-        } else {
+        if (email === '' && password === '') {
+            setEmailError('*required');
+            setPasswordError('*required');
+          } else if (email !== '' && password === '') {
+            setPasswordError('*required');
+          } else if (email === '' && password !== '') {
+            setEmailError('*required');
+          } else if (!(emailError !== '' || passwordError !== '')) {
             login(email, password)
 
         }
 
-
     }
+
+    const EmailValidation = () => {
+        const emailPattern = new RegExp(
+          '^[a-zA-Z0-9]+([-_+.]?[a-zA-Z0-9])*[@]([A-Za-z0-9])+[.][A-Za-z]{2,}([.][A-Za-z]{2,}){0,1}$',
+        );
+        if (email === '') {
+          setEmailError('Enter the email');
+        } else if (!emailPattern.test(email)) {
+          setEmailError('please enter the valid email');
+        }
+        if (emailPattern.test(email)) {
+          setEmailError('');
+        }
+      };
+
+    const PasswordValidation = () => {
+        const passwordPattern = new RegExp(
+          '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})',
+        );
+        if (password === '') {
+          setPasswordError('Enter Password');
+        }
+        if (!passwordPattern.test(password)) {
+          setPasswordError('Enter Correct Password');
+        }
+        if (passwordPattern.test(password)) {
+          setPasswordError('');
+        }
+      };
 
     return (
 
@@ -45,15 +79,25 @@ const LoginScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onBlur={EmailValidation}
+              
             />
+            <View style={styles.errorMeaasgeView}>
 
+                <Text style={styles.errorMessageText}>{emailError}</Text>
+            </View>
             <FormInput
                 labelValue={password}
                 onChangeText={(userPassword) => setPassword(userPassword)}
                 placeholderText="Password"
                 iconType="lock"
                 secureTextEntry={true}
+                onBlur={PasswordValidation}
             />
+            <View style={styles.errorMeaasgeView}>
+
+                <Text style={styles.errorMessageText}>{passwordError}</Text>
+            </View>
 
             <FormButton
 
@@ -74,8 +118,6 @@ const LoginScreen = ({ navigation }) => {
                 backgroundColor={"#f5e7ea"}
                 onPress={() => googleLogin()}
             />
-
-
             <SocialButton
                 buttonTitle="Sign In with Facebook"
                 btnType="facebook"
@@ -83,12 +125,6 @@ const LoginScreen = ({ navigation }) => {
                 backgroundColor={"#e6eaf4"}
                 onPress={() => fbLogin()}
             />
-
-
-
-
-
-
 
             <TouchableOpacity style={styles.forgotButton}
                 onPress={() => navigation.navigate('SignUp')}>
@@ -139,9 +175,23 @@ const styles = StyleSheet.create({
     },
 
     forgotButtonView: {
-
-
         alignSelf: 'flex-start',
     },
+
+    errorMessage: {
+        color: 'red',
+    },
+
+    errorMeaasgeView: {
+        marginTop: -8,
+        alignSelf: 'flex-start',
+    },
+
+    errorMessageText: {
+        fontSize: 10,
+        color: 'red',
+        fontFamily: 'Lato-Regular',
+
+    }
 
 })
