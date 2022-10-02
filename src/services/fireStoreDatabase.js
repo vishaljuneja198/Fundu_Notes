@@ -10,6 +10,7 @@ const fireStoreDatabase = () => {
   const [unpinnedList, setunpinnedList] = useState([]);
   const [archiveList, setArchiveList] = useState([]);
   const [notesList, setNotesList] = useState([]);
+  const [deleteList, setDeleteList] = useState([]);
 
   const writingNoteToFireStore = async (
     title,
@@ -42,6 +43,7 @@ const fireStoreDatabase = () => {
     let pinnedArray = [];
     let unpinnedArray = [];
     let archiveArray = [];
+    let deleteArray = [];
 
     try {
       const list = await notesCollection.doc(user.uid).collection('Notes').get();
@@ -50,24 +52,24 @@ const fireStoreDatabase = () => {
         data.key = doc.id;  //doc id into key
         notesArray.push(data);//push operation 
 
-         if (data.Pin && !data.Archive) {
+        if (data.Delete) {
+          deleteArray.push(data);
+        } else if (data.Pin && !data.Archive && !data.Delete) {
           pinnedArray.push(data);
-        } else if (!data.Pin && !data.Archive ) {
+        } else if (!data.Pin && !data.Archive && !data.Delete) {
           unpinnedArray.push(data);
         } else {
           archiveArray.push(data);
         }
-
-
       });
     } catch (error) {
       console.log(error);
     }
-
     setNotesList(notesArray);
     setPinnedList(pinnedArray);
     setunpinnedList(unpinnedArray);
     setArchiveList(archiveArray);
+    setDeleteList(deleteArray);
     
     console.log("---------Starting of notes array")
     console.log(notesArray)
@@ -77,6 +79,8 @@ const fireStoreDatabase = () => {
     console.log(unpinnedArray)
     console.log("---------Starting of archive")
     console.log(archiveArray)
+    console.log("------------starting of delete array")
+    console.log(deleteArray)
 
   };
 
@@ -112,6 +116,7 @@ const fireStoreDatabase = () => {
     updateNote,
     archiveList,
     notesList,
+    deleteList
 
   };
 };

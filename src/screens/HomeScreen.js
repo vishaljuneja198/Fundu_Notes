@@ -7,36 +7,49 @@ import fireStoreDatabase from '../services/fireStoreDatabase';
 import NoteList from '../components/NoteList';
 
 
+
+import {useSelector} from 'react-redux';
+
+
 const HomeScreen = ({ navigation }) => {
+
+    const { fetchingNote, pinnedList, unpinnedList, archiveList, pin, notesList } = fireStoreDatabase();
+  //  const [gridView, setGridView] = useState(false)
+
+
     
-    const { fetchingNote,pinnedList,unpinnedList,archiveList,pin,notesList } = fireStoreDatabase();
 
     useEffect(() => {
         const unSubscribe = navigation.addListener('focus', () => {
-          fetchingNote();
+            fetchingNote();
         });
         return unSubscribe;
-      }, [navigation, fetchingNote]);
+    }, [navigation, fetchingNote]);
 
 
-    
+
     return (
         <View style={styles.container}>
+            
             <View style={{ flex: 0.1 }}>
-                <UpperBar />
+              
+                <UpperBar
+                   
+                />
             </View>
             <View style={{ flex: 0.8, marginEnd: 10 }}>
                 <NoteList
-                 navigation={navigation}
-                 pinnedList={pinnedList}
-                 unpinnedList={unpinnedList}
-                 archiveList={archiveList}
-                 notesList={notesList}
-                 pin={pin}               
+                    navigation={navigation}
+                    pinnedList={pinnedList}
+                    unpinnedList={unpinnedList}
+                    archiveList={archiveList}
+                    notesList={notesList}
+                    pin={pin}                    
                 />
-                </View>
+            </View>
 
             <View style={{ flex: 0.10, marginBottom: -18 }}><BottomBar /></View>
+           
         </View>
     );
 }

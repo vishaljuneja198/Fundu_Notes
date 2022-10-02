@@ -6,13 +6,14 @@ import Animated from 'react-native-reanimated';
 import { heightPercentage, widthPercentage } from '../utils/dimension';
 import DeleteIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const NotesBottom = () => {
+const NotesBottom = ({handleDeleteButton, states}) => {
 
 const controlDeleteButton=()=>{
+
+
+    states.setDel(!states.del)
+    handleDeleteButton()
     bs.current.snapTo(1)
-
-    
-
 
 }
 
@@ -25,7 +26,7 @@ const controlDeleteButton=()=>{
                 </TouchableOpacity >
             </View>
             <View style={styles.deleteView}>
-                <TouchableOpacity onPress={() => bs.current.snapTo(1)}>
+                <TouchableOpacity onPress={controlDeleteButton }>
                     <View style={styles.deleteIconView}>
                         <DeleteIcon name="delete" color="black" size={24} />
                         <Text style={styles.text}>Delete</Text>

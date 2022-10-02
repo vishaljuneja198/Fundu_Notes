@@ -19,12 +19,12 @@ const LoginScreen = ({ navigation }) => {
     Login_validate_feild = () => {
 
         if (email === '' && password === '') {
-            setEmailError('*required');
-            setPasswordError('*required');
+            setEmailError('Enter the email');
+            setPasswordError('Enter the Pasword');
           } else if (email !== '' && password === '') {
-            setPasswordError('*required');
+            setPasswordError('Enter the Pasword');
           } else if (email === '' && password !== '') {
-            setEmailError('*required');
+            setEmailError('Enter the Pasword');
           } else if (!(emailError !== '' || passwordError !== '')) {
             login(email, password)
 

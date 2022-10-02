@@ -10,10 +10,33 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const SearchNotesScreen = () => {
-  const navigation = useNavigation();
-  return (
 
+import fireStoreDatabase from '../services/fireStoreDatabase';
+const SearchNotes = ({ }) => {
+  const navigation = useNavigation();
+  const [value, setValue] = useState();
+  const { notesList, fetchingNote } = fireStoreDatabase();
+  const [searchData, setSearchData] = useState([]);
+
+  useEffect(() => {
+    fetchingNote();
+  }, []);
+
+  const OnChangeTextInput = text => {
+    setValue(text);
+    let array = notesList.filter(
+      data =>
+        (text && data.Title.toLowerCase().includes(text.toLowerCase())) ||
+        (text && data.Note.toLowerCase().includes(text.toLowerCase())),
+    );
+    setSearchData(array);
+  };
+
+  const onPressUpdate = item => {
+    navigation.navigate('NotesScreen', { ...item, isUpDate: true });
+  };
+
+  return (
     <View style={{ flex: 1 }}>
       <View style={Styles.view}>
         <TouchableOpacity
@@ -29,17 +52,38 @@ const SearchNotesScreen = () => {
         </TouchableOpacity>
         <TextInput
           style={Styles.textInput}
-
+          value={value}
           placeholder="Search"
           placeholderTextColor={'gray'}
-          onChangeText={() => { }}
+          onChangeText={OnChangeTextInput}
         />
       </View>
+      {searchData ? (
+        <FlatList
+          data={searchData}
+          numColumns={1}
+          key={1}
+          keyExtractor={item => item?.key}
+          renderItem={({ item }) =>
+            item ? (
+              <View style={Styles.cardview}>
+                <TouchableOpacity
+                  onPress={() => {
+                    onPressUpdate(item);
+                  }}>
+                  <Text style={Styles.titleText}> {item?.Title}</Text>
+                  <Text style={Styles.notesText}>{item?.Note}</Text>
+                </TouchableOpacity>
+              </View>
+            ) : null
+          }
+        />
+      ) : null}
     </View>
-  )
-}
+  );
+};
 
-export default SearchNotesScreen;
+export default SearchNotes;
 
 const Styles = StyleSheet.create({
   view: {

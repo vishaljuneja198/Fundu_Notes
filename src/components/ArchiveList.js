@@ -4,14 +4,19 @@ import NoteCard from './NoteCard';
 import {useSelector, useDispatch} from 'react-redux';
 
 const ArchiveList = ({navigation, archiveList}) => {
+
+  const {gridView} = useSelector(state => state.userReducer);
+  let numCols = gridView ? 2 : 0;
   const renderItem = ({item}) => (
-    <NoteCard navigation={navigation} item={item}/>
+    <NoteCard navigation={navigation} item={item} gridView={gridView}/>
   );
 
   return (    
       <FlatList
+        numColumns={numCols}
         data={archiveList}
-        renderItem={renderItem}       
+        renderItem={renderItem}    
+        key={numCols}   
       />   
   );
 };

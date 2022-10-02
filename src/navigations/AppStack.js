@@ -5,6 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import DrawerNavigation from './DrawerNavigation';
 import NotesScreen from '../screens/NotesScreen';
 import SearchNotesScreen from'../screens/SearchNotes';
+import { Provider } from 'react-native-paper';
+import {Store} from '../services/redux/Store'
 const Stack = createStackNavigator();
 
 const AppStack = () => {

@@ -1,32 +1,37 @@
 
-import React,{useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import ArchiveList from '../components/ArchiveList';
 import { windowHeight, windowWidth } from '../utils/dimension';
 import fireStoreDatabase from '../services/fireStoreDatabase';
-
+import {useSelector, useDispatch} from 'react-redux';
+import { setGridView, SET_GRID_VIEW } from '../services/redux/Action';
 
 const ArchiveScreen = () => {
     const navigation = useNavigation();
-
-    const {archiveList, fetchingNote} = fireStoreDatabase();
+    const { archiveList, fetchingNote } = fireStoreDatabase();
+    const {gridView} = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const unSubscribe = navigation.addListener('focus', () => {
-          fetchingNote();
+            fetchingNote();
         });
         return unSubscribe;
-      }, [navigation, fetchingNote]);
+    }, [navigation, fetchingNote]);
 
     return (
 
         <View style={styles.container}>
             <View style={{ flex: 0.09 }}>
                 <View
-                    style={{flexDirection: 'row',justifyContent: 'space-between',}}>
-                    <View style={{flexDirection: 'row',alignItems: 'center',margin: '2.5%',}}>
+                    style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', margin: '2.5%', }}>
                         <TouchableOpacity
                             style={{ marginRight: 10 }}
                             onPress={() => {
@@ -47,23 +52,28 @@ const ArchiveScreen = () => {
                         <TouchableOpacity style={{ marginRight: 10 }}>
                             <Icon name="search" color={'black'} size={30} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginRight: 10 }}>
-                            <Icon name="ios-grid-outline" color={'black'} size={30} />
+                        <TouchableOpacity onPress={() =>  dispatch(setGridView(!gridView))}>
+                            {gridView ? (
+                                <FontAwesome5 name="equals" size={30} color="black" />
+                            ) : (
+                                <Entypo name="grid" size={30} color="black" />
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
 
             <View style={styles.notes}>
-        <ArchiveList
-          navigation={navigation}
-          archiveList={archiveList}
-         
-        />
-      </View>
+                <ArchiveList
+                    navigation={navigation}
+                    archiveList={archiveList}
+                
+
+                />
+            </View>
         </View>
-        
-        
+
+
     )
 }
 
@@ -72,7 +82,7 @@ export default ArchiveScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-      
+
     },
     text: {
         fontSize: 20,
@@ -105,6 +115,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 2,
         paddingHorizontal: 2,
-      },
+    },
 
 });

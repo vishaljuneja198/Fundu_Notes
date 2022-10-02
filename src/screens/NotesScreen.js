@@ -34,6 +34,14 @@ console.log(pin)
         ); }
         navigation.goBack();
    };
+
+   const handleDeleteButton = async () => {
+    console.log("welcome to delete function")
+    await updateNote(id, title, note, pin, archive, true);
+   
+ 
+  };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 0.1 }}>
@@ -48,7 +56,9 @@ console.log(pin)
 
             </View>
             <View style={{ flex: 0.1 }}>
-                <NotesBottom />
+                <NotesBottom 
+                  states={states}
+                handleDeleteButton={handleDeleteButton} />
             </View>
         </SafeAreaView>
     )

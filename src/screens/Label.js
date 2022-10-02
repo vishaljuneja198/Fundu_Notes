@@ -10,41 +10,58 @@ import React, { useState, useEffect } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import LableHeader from '../components/label/LabelHeader';
+import NewLabel from '../components/label/NewLabel';
+import LabelsData from '../services/labelFireStoreDatabase';
+import { Provider } from 'react-redux';
+import {Store} from '../services/redux/Store'
 
 
 const LabelScreen = () => {
     const navigation = useNavigation();
+    const [cross, setCross] = useState(false);
+    const [plus, setPlus] = useState(false);
+    const [right, setRight] = useState(false);
+    const [input, setInput] = useState('');
+    const {writingLabelToFireStore, fetchLabel, labelsList} = LabelsData();
+
+
+    const states = {
+        cross,
+        plus,
+        right,
+        input,
+        setInput,
+        setCross,
+        setPlus,
+        setRight,
+      };
+      
+      const handleDoneIcon = async () => {
+        if (input.length) {
+          await writingLabelToFireStore(input);
+          await fetchLabel();
+          setInput('');
+        } else {
+          setCross(!cross);
+          setRight(!right);
+        }
+      };
+      
+    
+      useEffect(() => {
+        fetchLabel();
+      }, []);
+    
+      
     return (
 
-        <View>
-            <View style={Styles.header}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <AntDesign name="arrowleft" size={25} color={'black'} />
-                </TouchableOpacity>
-                <Text style={Styles.headerText}>EditLabels</Text>
-            </View>
-            <View
-                style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1 }}>
-
-                <TouchableOpacity style={{ marginLeft: '3%' }}>
-                    <AntDesign name="plus" color={'black'} size={24} />
-                </TouchableOpacity>
-                <TextInput
-                    style={Styles.textInput}
-
-                    placeholder="Create New Label"
-                    placeholderTextColor={'black'}
-                    onChangeText={() => { }}
-
-                    onPress={() => { }}
-                />
-
-            </View>
-
-        </View>
+     
+          <View>
+           <LableHeader navigation={navigation}/>
+           <NewLabel states={states} handleDoneIcon={handleDoneIcon} />
+     
+           </View>
     )
 }
 

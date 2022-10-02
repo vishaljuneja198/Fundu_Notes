@@ -19,15 +19,24 @@ import { AuthContext } from '../navigations/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import ModalProfile from './ModalProfile';
 import ImagePicker from 'react-native-image-crop-picker';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { setGridView, SET_GRID_VIEW } from '../services/redux/Action';
+  import userReducer from '../services/redux/Reducers';
+  import {useSelector, useDispatch} from 'react-redux';
 
-const UpperBar = ({ }) => {
+const UpperBar = ({
+  
+}) => {
 
   const navigation = useNavigation();
   const { user, logout } = useContext(AuthContext);
   const [image, setImage] = useState(require('../assets/profile.jpg'))
   const [visible, setVisible] = useState(false)
   const [visibleProfile, setVisibleProfile] = useState(false)
-
+  const {gridView} = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
+  
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       width: 300,
@@ -70,10 +79,15 @@ const UpperBar = ({ }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity onPress={() => { }}>
 
-              <Feather name="grid" size={24} style={{ paddingLeft: 3 }} />
-            </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(setGridView (!gridView))}>
+          {gridView ?(
+          <FontAwesome5 name="equals" size={24} color="black" style={{ paddingLeft: 3 }}/>
+          ) : (
+            <Feather name="grid" size={24} style={{ paddingLeft: 3 }} />
+            )}
+        </TouchableOpacity>
+           
           </View>
           <View style={{ paddingHorizontal: 10 }}>
             <ModalProfile visibleProfile={visibleProfile}>

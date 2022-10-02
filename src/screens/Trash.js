@@ -2,19 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import TrashList from '../components/TrashList';
+import fireStoreDatabase from '../services/fireStoreDatabase';
+
 const DeletedScreen = () => {
   const navigation = useNavigation();
+  const { deleteList, fetchingNote } = fireStoreDatabase();
+  useEffect(() => {
+    const unSubscribe = navigation.addListener('focus', () => {
+        fetchingNote();
+    });
+    return unSubscribe;
+}, [navigation, fetchingNote]);
+
   return (
     <View style={Styles.container}>
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            height: '7%',
-            flexDirection: 'row',
-            marginTop: '2%',
-            marginBottom: '2%',
-            justifyContent: 'space-between',
-          }}>
+      <View style={{ flex: 0.09 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
           <View
             style={{
               flexDirection: 'row',
@@ -35,6 +39,15 @@ const DeletedScreen = () => {
 
         </View>
       </View>
+
+
+      <View style={Styles.notes}>
+                <TrashList
+                    navigation={navigation}
+                    deleteList={deleteList}
+
+                />
+            </View>
     </View>
   )
 }
@@ -71,4 +84,10 @@ const Styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
+  notes: {
+    flex: 0.91,
+    backgroundColor: 'white',
+    padding: 2,
+    paddingHorizontal: 2,
+},
 });
