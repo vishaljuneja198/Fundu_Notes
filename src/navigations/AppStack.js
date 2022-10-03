@@ -18,6 +18,7 @@ const AppStack = () => {
             <Stack.Screen name='drawer' component={DrawerNavigation} options={{ header: () => null }} />
             <Stack.Screen name='NotesScreen' component={NotesScreen} options={{ header: () => null }} />
             <Stack.Screen name='SearchNotes' component={SearchNotesScreen} options={{ header: () => null }} />
+            
         </Stack.Navigator>
 
 

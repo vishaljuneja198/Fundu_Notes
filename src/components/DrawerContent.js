@@ -42,6 +42,8 @@ const DrawerContent = (props) => {
                     )}
                     onPress={() => navigation.navigate('Reminders')}
                 />
+
+
                 <DrawerItem
                     icon={() => (
                         <AntDesign name="plus" color={'black'} size={24} />

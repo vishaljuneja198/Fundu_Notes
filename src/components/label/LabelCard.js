@@ -15,16 +15,15 @@ const LabelCards = ({ item, navigation}) => {
     const handleUpdate = () => {
         console.log("on press holder")
 
-        updateLabelData(item.key, value);
-        fetchLabelData();
-        setIconVisiility(false);
+        updateLabelData(item.key, value).then(()=>{fetchLabelData()})
+       // fetchLabelData();
+        //setIconVisiility(false);
     };
 
     const handleDelete = () => {
         console.log(item.key)
         console.log("in handle delete",item)
-        deleteLabelData(item.key)
-        //.then(()=>{fetchLabelData()});//ashwini mam
+        deleteLabelData(item.key).then(()=>{fetchLabelData()});//ashwini mam
     };
 
     return (

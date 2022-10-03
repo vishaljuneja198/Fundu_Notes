@@ -67,7 +67,7 @@ const labelsFireBase = () => {
     console.log(key)
     try {
       
-      await response.doc(user.id).collection('labels').doc(key).delete();
+      await response.doc(user.uid).collection('labels').doc(key).delete();
       console.log('deleted data');
     } catch (error) {
       console.log('error....', error);
