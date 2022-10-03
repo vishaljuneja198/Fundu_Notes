@@ -31,7 +31,7 @@ const fireStoreDatabase = () => {
           Archive: archive,
           Delete: del,
         });
-        console.log(user.uid)
+        console.log("notes added")
       }
     } catch (error) {
       console.log(error);

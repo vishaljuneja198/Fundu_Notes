@@ -1,72 +1,85 @@
 import React, {useContext, useEffect, useState} from 'react';
-import firestore from '@react-native-firebase/firestore';
+import firestore  from '@react-native-firebase/firestore';
 import { AuthContext } from '../navigations/AuthProvider';
 import {useSelector, useDispatch} from 'react-redux';
-import {setLabelData} from '../services/redux/Action';
+import { fetchLabels } from './redux/Action';
 
-const labelCollections = firestore().collection('UserNotes');
-const LabelsData = () => {
+
+const response = firestore().collection('UserNotes');
+const labelsFireBase = () => {
   const {user} = useContext(AuthContext);
-  const [labelsList, setLabelsList] = useState([]);
-  const {lableData} = useSelector(state => state.userReducer);
+  const [labelData, setLabelData] = useState([]);
   const dispatch = useDispatch();
 
+ 
 
-
-  const writingLabelToFireStore = async label => {
-    try {
-      if (label !== '') {
-        await labelCollections.doc(user.id).collection('Labels').add({
-          Label: label,
+  const storeLabelsData = async labelName => {
+    if (labelName !== '') {
+      try {
+        await response.doc(user.uid).collection('labels').add({
+          labelName: labelName,
         });
+        console.log('data stored');
+      } catch (error) {
+        console.log('error....', error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
-  const updateLabel = async (label, key) => {
-    try {
-      if (label !== '') {
-        await labelCollections.doc(user.id).collection('Labels').doc(key).update({
-          Label: label,
+  const fetchLabelData = async () => {
+    let labelArray=[];
+    let list = await response.doc(user.uid).collection('labels').get();
+  list.forEach(doc => {
+    const data = doc.data();
+    data.key = doc.id;
+    labelArray.push(data);
+  });
+  setLabelData(labelArray);
+  console.log("entering of fetching ")
+  console.log(labelArray)
+  console.log("ending of fetching ")
+
+
+  dispatch(fetchLabels(labelArray));
+  return labelArray
+  };
+
+
+
+
+
+  const updateLabelData = async (key, labelName) => {
+    console.log('updated data');
+    if (labelName !== '') {
+      try {
+        await response.doc(user.uid).collection('labels').doc(key).update({
+          labelName: labelName,
         });
+        console.log('updated data');
+      } catch (error) {
+        console.log('error....', error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
-  const deleteLabel = async key => {
+  const deleteLabelData = async key => {
+    console.log("enter in deleteLabelData")
+    console.log(key)
     try {
-      await labelCollections.doc(user.id).collection('Labels').doc(key).delete();
+      
+      await response.doc(user.id).collection('labels').doc(key).delete();
+      console.log('deleted data');
     } catch (error) {
-      console.log(error);
+      console.log('error....', error);
     }
   };
-
-  const fetchLabel = async () => {
-    let labelsArray = [];
-    const list = await labelCollections.doc(user.id).collection('Labels').get();
-    list.forEach(doc => {
-      let data = doc.data();
-      data.key = doc.id;
-      labelsArray.push(data);
-    });
-    dispatch(setLabelData(labelsArray));
-  };
-
-  console.log("---------enter in label array --------")
-  console.log(LabelsData)
-  console.log("---------end of label aary --------")
-
   return {
-    writingLabelToFireStore,
-    fetchLabel,
-    updateLabel,
-    labelsList,
-    deleteLabel,
+    storeLabelsData,
+    fetchLabelData,
+    labelData,
+    updateLabelData,
+    deleteLabelData,
   };
 };
 
-export default LabelsData;
+export default labelsFireBase;

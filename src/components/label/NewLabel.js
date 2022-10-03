@@ -10,7 +10,7 @@ import {
 
 
 
-const NewLabel = ({states, handleDoneIcon}) => {
+const NewLabel = ({states, OnPressHandler}) => {
   return (
     <>
       <View style= {[
@@ -27,7 +27,7 @@ const NewLabel = ({states, handleDoneIcon}) => {
               onPress={() => {
                 states.setCross(!states.cross);
                 states.setRight(!states.right);
-                states.setInput('');
+                states.setLabelName('');
               }}
             />
           ) : (
@@ -43,14 +43,14 @@ const NewLabel = ({states, handleDoneIcon}) => {
           )}
           <View style={styles.textView}>
             <TextInput
-              value={states.input}
+              value={states.labelName}
               placeholder={'Create new label'}
               style={styles.text}
               onChangeText={text => {
                 
               //  states.setCross(!states.cross);
                 //states.setRight(!states.right);
-                states.setInput(text);
+                states.setLabelName(text);
                
               }}
 
@@ -69,7 +69,7 @@ const NewLabel = ({states, handleDoneIcon}) => {
               name="done"
               size={24}
               color="black"
-              onPress={handleDoneIcon}
+              onPress={OnPressHandler}
             />
           ) : null}
         </View>

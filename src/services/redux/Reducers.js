@@ -1,4 +1,4 @@
-import { SET_GRID_VIEW, FETCH_LABELS } from '../redux/Action';
+import { SET_GRID_VIEW,  FETCH_LABELS} from '../redux/Action';
 
 const initialState = {
   gridView: false,
