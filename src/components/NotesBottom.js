@@ -6,8 +6,9 @@ import Animated from 'react-native-reanimated';
 import { heightPercentage, widthPercentage } from '../utils/dimension';
 import DeleteIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 const NotesBottom = ({handleDeleteButton, states}) => {
-
+    const navigation = useNavigation();
 const controlDeleteButton=()=>{
 
 
@@ -35,7 +36,7 @@ const controlDeleteButton=()=>{
             </View>
 
             <View style={styles.labelView}>
-                <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity   onPress={() => navigation.navigate('LabelsList')}>
                     <View style={styles.deleteIconView}>
                         <MaterialIcons name="label-outline" size={24} color="black" />
                         <Text style={styles.text}>Label</Text>

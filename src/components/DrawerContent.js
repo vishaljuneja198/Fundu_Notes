@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BellIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,9 +8,20 @@ import DeleteIcon from 'react-native-vector-icons/AntDesign';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { heightPercentage, widthPercentage, } from '../utils/dimension';
-
+import labelsFireBase from '../services/labelFireStoreDatabase';
+import { useSelector } from 'react-redux';
+import LabelCards from './label/LabelCard';
+import DrawerLabelCards from './label/DrawerLabelCard';
 const DrawerContent = (props) => {
     const navigation = useNavigation();
+    const { labelData } = useSelector(state => state.userReducer);
+    const { fetchLabelData } = labelsFireBase();
+
+
+    useEffect(() => {
+        fetchLabelData();
+    }, []);
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView props={props}>
@@ -44,15 +55,33 @@ const DrawerContent = (props) => {
                 />
 
 
-                <DrawerItem
-                    icon={() => (
-                        <AntDesign name="plus" color={'black'} size={24} />
-                    )}
-                    label={() => (
-                        <Text style={{ color: 'black', fontSize: 14 }}>Create New Label</Text>
-                    )}
-                    onPress={() => { navigation.navigate('Label') }}
-                />
+
+
+                <View style={styles.labelView}>
+                    {labelData.length > 0 ? (
+                        <View style={styles.labelHeader}>
+                            <Text style={styles.labelText}>Labels</Text>
+                            <TouchableOpacity
+                                onPress={() => { navigation.navigate('Label') }
+                                }>
+                                <Text style={styles.labelText}>Edits</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : null}
+
+                    <DrawerLabelCards labelData={labelData} navigation={navigation} />
+                    <DrawerItem
+                        icon={() => (
+                            <AntDesign name="plus" color={'black'} size={24} />
+                        )}
+                        label={() => (
+                            <Text style={{ color: 'black', fontSize: 14 }}>Create New Label</Text>
+                        )}
+                        onPress={() => { navigation.navigate('Label') }}
+                    />
+
+
+                </View>
                 <DrawerItem
                     icon={() => (
                         <Ionicons name="archive-outline" color={'black'} size={24} />
@@ -96,6 +125,21 @@ const styles = StyleSheet.create({
     },
     drawerItems: {
         backgroundColor: 'red'
+    },
+    labelText: {
+        fontSize: 15,
+        color: 'black',
+    },
+    labelHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: '5%',
+    },
+    labelView: {
+        borderBottomColor: 'blue',
+        borderBottomWidth: 1,
+        borderTopColor: 'blue',
+        borderTopWidth: 1,
     },
 
 });

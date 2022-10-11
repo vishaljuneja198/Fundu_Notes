@@ -1,9 +1,29 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { heightPercentage, widthPercentage } from '../utils/dimension';
+import Chip from './label/chip';
+import {useSelector} from 'react-redux';
 const NoteCard = ({ item, navigation, gridView }) => {
 
+  const {labelData} = useSelector(state => state.userReducer);
+  
+  let chipData = labelData.filter(labels => {
+    console.log("enter in filter ")
 
+    for (let index = 0; index < item?.labelData?.length; index++) {
+      console.log("enter in for loop")
+      console.log(labels.key)
+      console.log(item.labelData[index])
+     if (labels.key==(item.labelData[index].key)) {
+        // console.log("enter in if loop")
+         return item.labelData[index].key ;
+       }
+    }
+  });
+
+  console.log("--------start chipdata---------")
+  console.log(chipData);
+  console.log("--------end chipdata---------")
   return (
     <TouchableOpacity
       onPress={() => {
@@ -17,6 +37,9 @@ const NoteCard = ({ item, navigation, gridView }) => {
         styles.container]}>
         <Text style={styles.title}>{item.Title}</Text>
         <Text style={styles.note}>{item.Note}</Text>
+     
+
+        <Chip chipData={chipData} />
       </View>
     </TouchableOpacity>
   );

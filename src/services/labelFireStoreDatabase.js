@@ -1,17 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react';
-import firestore  from '@react-native-firebase/firestore';
+import React, { useContext, useEffect, useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../navigations/AuthProvider';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchLabels } from './redux/Action';
 
 
 const response = firestore().collection('UserNotes');
 const labelsFireBase = () => {
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [labelData, setLabelData] = useState([]);
   const dispatch = useDispatch();
 
- 
+
 
   const storeLabelsData = async labelName => {
     if (labelName !== '') {
@@ -27,21 +27,19 @@ const labelsFireBase = () => {
   };
 
   const fetchLabelData = async () => {
-    let labelArray=[];
+    let labelArray = [];
     let list = await response.doc(user.uid).collection('labels').get();
-  list.forEach(doc => {
-    const data = doc.data();
-    data.key = doc.id;
-    labelArray.push(data);
-  });
-  setLabelData(labelArray);
-  console.log("entering of fetching ")
-  console.log(labelArray)
-  console.log("ending of fetching ")
+    list.forEach(doc => {
+      const data = doc.data();
+      data.key = doc.id;
+      labelArray.push(data);
+    });
+    setLabelData(labelArray);
+   
 
 
-  dispatch(fetchLabels(labelArray));
-  return labelArray
+    dispatch(fetchLabels(labelArray));
+    return labelArray
   };
 
 
@@ -63,10 +61,9 @@ const labelsFireBase = () => {
   };
 
   const deleteLabelData = async key => {
-    console.log("enter in deleteLabelData")
-    console.log(key)
+  
     try {
-      
+
       await response.doc(user.uid).collection('labels').doc(key).delete();
       console.log('deleted data');
     } catch (error) {

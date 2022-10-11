@@ -17,7 +17,9 @@ const fireStoreDatabase = () => {
     note,
     pin,
     archive,
-    del
+    del,
+    labelData,
+   
   ) => {
     try {
 
@@ -30,6 +32,9 @@ const fireStoreDatabase = () => {
           Pin: pin,
           Archive: archive,
           Delete: del,
+          labelData: labelData,
+         
+         
         });
         console.log("notes added")
       }
@@ -71,16 +76,7 @@ const fireStoreDatabase = () => {
     setArchiveList(archiveArray);
     setDeleteList(deleteArray);
     
-    console.log("---------Starting of notes array")
-    console.log(notesArray)
-    console.log("---------Starting of pinned")
-    console.log(pinnedArray)
-    console.log("---------Starting of unpinned")
-    console.log(unpinnedArray)
-    console.log("---------Starting of archive")
-    console.log(archiveArray)
-    console.log("------------starting of delete array")
-    console.log(deleteArray)
+   console.log(notesList)
 
   };
 
@@ -93,6 +89,9 @@ const fireStoreDatabase = () => {
     pin,
     archive,
     del,
+    labelData,
+ 
+
   ) => {
     try {
       await notesCollection.doc(user.uid).collection('Notes').doc(id).update({
@@ -101,6 +100,8 @@ const fireStoreDatabase = () => {
         Pin: pin,
         Archive: archive,
         Delete: del,
+        labelData: labelData,
+      
       });
     } catch (error) {
       console.log(error);
